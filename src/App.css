@@ -20,6 +20,10 @@ body {
   position: relative;
   cursor: pointer;
 }
+.microphone-icon-container svg{
+  width: 100px;
+  height: 100px;
+}
 .microphone-icon-container.listening::before {
   position: absolute;
   top: 50%;
@@ -77,4 +81,10 @@ body {
   background: none;
   color: white;
   width: fit-content;
+}
+
+.header{
+  text-align: center;
+  padding: 10px;
+  margin: 70px 0;
 }
