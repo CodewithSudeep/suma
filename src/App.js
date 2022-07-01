@@ -45,6 +45,11 @@ function App() {
     resetTranscript();
   };
   return (
+    <>
+    <div className="header">
+    <h4>SUMA</h4>
+    <p>A Personal Voice Assistant</p>
+    </div>
     <div className="microphone-wrapper">
       <div className="mircophone-container">
         <div
@@ -52,13 +57,8 @@ function App() {
           ref={microphoneRef}
           onClick={handleListing}
         >
-          {isListening ?   <Wave /> :  <SettingsVoiceIcon />}
+          {isListening ?   <Wave sx={{width:"50px"}} /> :  <SettingsVoiceIcon />}
         </div>
-        {isListening && (
-          <button className="microphone-stop btn" onClick={stopHandle}>
-            Stop
-          </button>
-        )}
       </div>
       {transcript && (
         <div className="microphone-result-container">
@@ -69,6 +69,7 @@ function App() {
         </div>
       )}
     </div>
+    </>
   );
 }
 export default App;
