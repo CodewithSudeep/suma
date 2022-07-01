@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import "./App.css";
-// import microPhoneIcon from "./microphone.svg";
+import Wave from "./Wave";
+import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
+
 
 function App() {
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
-  
+
   // stop listening after 5 seconds of silence
   useEffect(() => {
     if (isListening) {
       const timeout = setTimeout(() => {
-       stopHandle();
+        stopHandle();
       }, 10000);
       return () => clearTimeout(timeout);
     }
@@ -50,14 +52,7 @@ function App() {
           ref={microphoneRef}
           onClick={handleListing}
         >
-          <button
-          style={{ backgroundColor: "transparent", border: "none" }}
-          >
-            🎤 
-          </button>
-        </div>
-        <div className="microphone-status">
-          {isListening ? "Listening........." : "Click to start Listening"}
+          {isListening ?   <Wave /> :  <SettingsVoiceIcon />}
         </div>
         {isListening && (
           <button className="microphone-stop btn" onClick={stopHandle}>
@@ -68,7 +63,7 @@ function App() {
       {transcript && (
         <div className="microphone-result-container">
           <div className="microphone-result-text">{transcript}</div>
-          <button className="microphone-reset btn" onClick={()=>handleReset}>
+          <button className="microphone-reset btn" onClick={() => handleReset}>
             Reset
           </button>
         </div>
