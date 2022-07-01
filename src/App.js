@@ -3,6 +3,7 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 import "./App.css";
 import Wave from "./Wave";
 import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
+import {handler, proceesor, sendResponse} from './process'
 
 
 function App() {
@@ -15,10 +16,16 @@ function App() {
     if (isListening) {
       const timeout = setTimeout(() => {
         stopHandle();
-      }, 10000);
+      }, 5000);
       return () => clearTimeout(timeout);
     }
   }, [isListening]);
+
+  useEffect(()=>{
+    if(transcript){
+      proceesor(transcript)
+    }
+  },[transcript])
 
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -39,11 +46,26 @@ function App() {
     setIsListening(false);
     microphoneRef.current.classList.remove("listening");
     SpeechRecognition.stopListening();
+    handler();
+    setTimeout(()=>{
+      if(transcript){
+        const res = sendResponse();
+        alert(res);
+      }
+    },2000)
   };
   const handleReset = () => {
     stopHandle();
     resetTranscript();
   };
+
+  const handleClick = ()=>{
+    if(isListening){
+      stopHandle()
+    }else{
+      handleListing()
+    }
+  }
   return (
     <>
     <div className="header">
@@ -55,7 +77,7 @@ function App() {
         <div
           className="microphone-icon-container"
           ref={microphoneRef}
-          onClick={handleListing}
+          onClick={handleClick}
         >
           {isListening ?   <Wave sx={{width:"50px"}} /> :  <SettingsVoiceIcon />}
         </div>
