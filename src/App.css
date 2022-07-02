@@ -8,17 +8,23 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 .mircophone-container {
-  display: flex;
-  justify-content: center;
+  
   align-items: center;
-  width: 100vw;
+  display: flex;
   height: 50vh;
+  justify-content: center;
+  width: 98vw;
+  margin: auto;
+
 }
 .microphone-icon-container {
   padding: 20px;
-  margin-right: 20px;
   position: relative;
   cursor: pointer;
+}
+.microphone-icon-container svg{
+  width: 100px;
+  height: 100px;
 }
 .microphone-icon-container.listening::before {
   position: absolute;
@@ -58,23 +64,33 @@ body {
   box-shadow: 0px 0px 10px 5px #ffffff1a;
 }
 .microphone-result-container {
-  text-align: center;
-  height: 50vh;
+  align-items: center;
   display: flex;
   flex-direction: column;
+  height: 50vh;
   justify-content: space-between;
-  align-items: center;
   padding-bottom: 30px;
+  text-align: center;
+  width: 98vw;
+  overflow: hidden;
+  margin: auto;
 
 }
 .microphone-result-text {
   margin-bottom: 30px;
-  width: 70vw;
   overflow-y: auto;
+  width: 100%;
+  text-align: center;
 }
 .microphone-reset {
   border: 1px solid #fff;
   background: none;
   color: white;
   width: fit-content;
+}
+
+.header{
+  text-align: center;
+  padding: 10px;
+  margin: 70px 0;
 }
