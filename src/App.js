@@ -3,13 +3,63 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 import "./App.css";
 import Wave from "./Wave";
 import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
-import {handler, proceesor, sendResponse} from './process'
+import {handler, proceesor, sendResponse} from './process';
+import Speech from 'speak-tts'
+
 
 function App() {
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
   const [response, setResponse] = useState("")
+  
+  const speech = new Speech() // will throw an exception if not browser supported
+  if(speech.hasBrowserSupport()) { // returns a boolean
+    console.log("speech synthesis supported")
+  }
+  else {
+    alert("speech synthesis not supported")
+  }
+  // init the speech synthesis engine
+  speech.init({
+    'volume': 1,
+    'lang': 'en-US',
+    'rate': 1,
+    'pitch': 1,
+    'voice': 'Microsoft David - English (United States)',
+    'splitSentences': true,
+    'listeners': {
+      'onvoiceschanged': (voices) => {
+        console.log("voices changed", voices)
+      }
+    }
+  }).then((data) => {
+    console.log("speech init success", data)
+  }).catch(e => {
+    console.error("speech init error", e)
+  }).finally(() => {
+    console.log("speech init complete")
+  })
+  const speak = async () => {
+    await speech.speak({
+      text: response,
+      queue: false,
+      listeners: {
+        onstart: () => {
+          console.log("started")
+        }
+      }
+    }).then(() => {
+      console.log("success")
+    }).catch(e => {
+      console.error("error", e)
+    }).finally(() => {
+      console.log("finally")
+    })
+}
+
+
+
   // stop listening after 5 seconds of silence
   useEffect(() => {
     if (isListening) {
@@ -26,6 +76,14 @@ function App() {
     }
   },[transcript])
 
+  useEffect(()=>{
+    if(response){
+      speak().then(()=>{
+        resetTranscript()
+      })
+    }
+  },[response])
+
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
     return (
@@ -36,6 +94,7 @@ function App() {
   }
   const handleListing = () => {
     setIsListening(true);
+    setResponse("");
     microphoneRef.current.classList.add("listening");
     SpeechRecognition.startListening({
       continuous: false,
@@ -48,12 +107,14 @@ function App() {
     handler();
     const res = sendResponse();
     if(res){
+      // alert(res)
       setResponse(res);
     }
   };
   const handleReset = () => {
     stopHandle();
     resetTranscript();
+    setResponse("")
   };
 
   const handleClick = ()=>{

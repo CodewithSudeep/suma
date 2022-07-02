@@ -31,7 +31,7 @@ const sensor=()=>{
         ans= "my name is sudeep"
     }
 
-    if(
+    else if(
         (statement.includes('what is') && 
         statement.includes('capital city')) || 
         statement.includes('capital city')){
@@ -52,6 +52,9 @@ const sensor=()=>{
         if(statement.includes("germany")){
             ans += "germany is berlin";
         }
+    }
+    else{
+        ans = "I don't know";
     }
     input.answer= ans;
    
