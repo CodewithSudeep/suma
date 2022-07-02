@@ -5,11 +5,11 @@ import Wave from "./Wave";
 import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
 import {handler, proceesor, sendResponse} from './process'
 
-
 function App() {
   const { transcript, resetTranscript } = useSpeechRecognition();
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
+  const [response, setResponse] = useState("")
   // stop listening after 5 seconds of silence
   useEffect(() => {
     if (isListening) {
@@ -46,12 +46,10 @@ function App() {
     microphoneRef.current.classList.remove("listening");
     SpeechRecognition.stopListening();
     handler();
-    setTimeout(()=>{
-      if(transcript){
-        const res = sendResponse();
-        alert(res);
-      }
-    },2000)
+    const res = sendResponse();
+    if(res){
+      setResponse(res);
+    }
   };
   const handleReset = () => {
     stopHandle();
@@ -83,7 +81,12 @@ function App() {
       </div>
       {transcript && (
         <div className="microphone-result-container">
-          <div className="microphone-result-text">{transcript}</div>
+          <div className="microphone-result-text">
+           
+            <p className="query">{transcript}</p>
+            <p className="response">{response}</p>
+
+          </div>
           <button className="microphone-reset btn" onClick={() => handleReset}>
             Reset
           </button>

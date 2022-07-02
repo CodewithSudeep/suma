@@ -9,6 +9,7 @@ const input = {
 }
 
 export const proceesor = (raw)=>{
+    // console.log(raw);
     input.text = raw;
 }
 
@@ -20,18 +21,19 @@ const sensor=()=>{
     const statement = input.sort().text;
     console.log(statement);
     var ans =""
+    
     if(
-        statement.includes('what') && 
+        (statement.includes('what') && 
         statement.includes('is your') && 
-        statement.includes('name') ||
+        statement.includes('name')) ||
         statement.includes("what's your name")
         ){
         ans= "my name is sudeep"
     }
 
     if(
-        statement.includes('what is') && 
-        statement.includes('capital city') || 
+        (statement.includes('what is') && 
+        statement.includes('capital city')) || 
         statement.includes('capital city')){
         ans = "The capital city of ";
         if(statement.includes('nepal')){

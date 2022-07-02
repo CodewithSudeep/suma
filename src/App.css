@@ -71,7 +71,7 @@ body {
   justify-content: space-between;
   padding-bottom: 30px;
   text-align: center;
-  width: 98vw;
+  width: 70vw;
   overflow: hidden;
   margin: auto;
 
@@ -79,8 +79,8 @@ body {
 .microphone-result-text {
   margin-bottom: 30px;
   overflow-y: auto;
-  width: 100%;
-  text-align: center;
+  width: 70%;
+  /* margin: auto; */
 }
 .microphone-reset {
   border: 1px solid #fff;
@@ -93,4 +93,21 @@ body {
   text-align: center;
   padding: 10px;
   margin: 70px 0;
+}
+
+.response{
+  text-align: left;
+    background: beige;
+    padding: 12px;
+    border-radius: 10px;
+    width: max-content;
+    float: left;
+}
+.query{
+  text-align: right;
+  background: beige;
+  padding: 12px;
+  border-radius: 10px;
+  width: max-content;
+  float: right;
 }
