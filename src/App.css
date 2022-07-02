@@ -71,7 +71,7 @@ body {
   justify-content: space-between;
   padding-bottom: 30px;
   text-align: center;
-  width: 98vw;
+  width: 70vw;
   overflow: hidden;
   margin: auto;
 
@@ -93,4 +93,12 @@ body {
   text-align: center;
   padding: 10px;
   margin: 70px 0;
+}
+
+.response{
+  text-align: left;
+    background: beige;
+    padding: 12px;
+    border-radius: 10px;
+    width: inherit;
 }

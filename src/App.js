@@ -82,9 +82,14 @@ function App() {
           {isListening ?   <Wave sx={{width:"50px"}} /> :  <SettingsVoiceIcon />}
         </div>
       </div>
-      {transcript && (
+      {!transcript && (
         <div className="microphone-result-container">
-          <div className="microphone-result-text">{transcript}</div>
+          <div className="microphone-result-text">
+           {/* <p>
+              {transcript}
+            </p> */}
+            <p className="response">Example response</p>
+          </div>
           <button className="microphone-reset btn" onClick={() => handleReset}>
             Reset
           </button>
