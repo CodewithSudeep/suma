@@ -28,7 +28,7 @@ const sensor=()=>{
         statement.includes('name')) ||
         statement.includes("what's your name")
         ){
-        ans= "my name is sudeep"
+        ans= "my name is kajool"
     }
 
     else if(
@@ -51,6 +51,18 @@ const sensor=()=>{
         }
         if(statement.includes("germany")){
             ans += "germany is berlin";
+        }
+    }
+    else if(statement.includes("how to") || statement.includes("how do you")){
+        if(statement.includes("make coffee")){
+            ans+="Have Moood. \nGet Coffee Powder. \nYou are smart enough to make it."
+        }
+        if(statement.includes("pass exam")){
+            ans+="Go and study you poor.";
+        }
+        if(statement.includes("get a girlfirend")){
+            ans+="Just wake up";
+            
         }
     }
     else{

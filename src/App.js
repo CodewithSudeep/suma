@@ -3,7 +3,7 @@ import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognitio
 import "./App.css";
 import Wave from "./Wave";
 import SettingsVoiceIcon from '@mui/icons-material/SettingsVoice';
-import {handler, proceesor, sendResponse} from './process';
+import { handler, proceesor, sendResponse } from './process';
 import Speech from 'speak-tts'
 
 
@@ -12,34 +12,16 @@ function App() {
   const [isListening, setIsListening] = useState(false);
   const microphoneRef = useRef(null);
   const [response, setResponse] = useState("")
-  
+  const [all_voices, set_voices] = useState([])
+  const [activeVoice, setActiveVoice] = useState("")
+
   const speech = new Speech() // will throw an exception if not browser supported
-  if(speech.hasBrowserSupport()) { // returns a boolean
+  if (speech.hasBrowserSupport()) { // returns a boolean
     console.log("speech synthesis supported")
   }
   else {
     alert("speech synthesis not supported")
   }
-  // init the speech synthesis engine
-  speech.init({
-    'volume': 1,
-    'lang': 'en-US',
-    'rate': 1,
-    'pitch': 1,
-    'voice': 'Microsoft David - English (United States)',
-    'splitSentences': true,
-    'listeners': {
-      'onvoiceschanged': (voices) => {
-        console.log("voices changed", voices)
-      }
-    }
-  }).then((data) => {
-    console.log("speech init success", data)
-  }).catch(e => {
-    console.error("speech init error", e)
-  }).finally(() => {
-    console.log("speech init complete")
-  })
   const speak = async () => {
     await speech.speak({
       text: response,
@@ -56,8 +38,7 @@ function App() {
     }).finally(() => {
       console.log("finally")
     })
-}
-
+  }
 
 
   // stop listening after 5 seconds of silence
@@ -70,19 +51,48 @@ function App() {
     }
   }, [isListening]);
 
-  useEffect(()=>{
-    if(transcript){
+  useEffect(() => {
+    if (transcript) {
       proceesor(transcript)
     }
-  },[transcript])
+  }, [transcript])
 
-  useEffect(()=>{
-    if(response){
-      speak().then(()=>{
+  useEffect(() => {
+    if (response) {
+      speak().then(() => {
         resetTranscript()
       })
     }
-  },[response])
+  }, [response])
+
+
+
+  useEffect(() => {
+    (async () => {
+      try {
+        await speech.init({
+          'volume': 1,
+          'lang': 'en-US',
+          'rate': 1,
+          'pitch': 1,
+          'voice': activeVoice,
+          'splitSentences': true,
+          'listeners': {
+            'onvoiceschanged': (voices) => {
+              console.log("voices changed", voices)
+              var _voices = []
+              for(let voiceIndex in voices)
+                _voices.push(voices[voiceIndex].voiceURI)
+              // console.log(voices);
+              set_voices(_voices)
+            }
+          }
+        })
+      } catch (error) {
+        console.error(error)
+      }
+    })()
+  }, [activeVoice])
 
 
   if (!SpeechRecognition.browserSupportsSpeechRecognition()) {
@@ -106,7 +116,7 @@ function App() {
     SpeechRecognition.stopListening();
     handler();
     const res = sendResponse();
-    if(res){
+    if (res) {
       // alert(res)
       setResponse(res);
     }
@@ -117,43 +127,49 @@ function App() {
     setResponse("")
   };
 
-  const handleClick = ()=>{
-    if(isListening){
+  const handleClick = () => {
+    if (isListening) {
       stopHandle()
-    }else{
+    } else {
       handleListing()
     }
   }
   return (
     <>
-    <div className="header">
-    <h4>SUMA</h4>
-    <p>A Personal Voice Assistant</p>
-    </div>
-    <div className="microphone-wrapper">
-      <div className="mircophone-container">
-        <div
-          className="microphone-icon-container"
-          ref={microphoneRef}
-          onClick={handleClick}
-        >
-          {isListening ?   <Wave sx={{width:"50px"}} /> :  <SettingsVoiceIcon />}
-        </div>
+      {/* {console.log(all_voices)} */}
+      <div className="header">
+        <h4>SUMA</h4>
+        <p>A Personal Voice Assistant</p>
+        {all_voices && <>
+          <select onChange={e=>setActiveVoice(e.target.value)}>
+            {all_voices.map((v,k)=><option key={k} value={v}>{v}</option>)}
+          </select>
+        </>}
       </div>
-      {transcript && (
-        <div className="microphone-result-container">
-          <div className="microphone-result-text">
-           
-            <p className="query">{transcript}</p>
-            <p className="response">{response}</p>
-
+      <div className="microphone-wrapper">
+        <div className="mircophone-container">
+          <div
+            className="microphone-icon-container"
+            ref={microphoneRef}
+            onClick={handleClick}
+          >
+            {isListening ? <Wave sx={{ width: "50px" }} /> : <SettingsVoiceIcon />}
           </div>
-          <button className="microphone-reset btn" onClick={() => handleReset}>
-            Reset
-          </button>
         </div>
-      )}
-    </div>
+        {transcript && (
+          <div className="microphone-result-container">
+            <div className="microphone-result-text">
+
+              <p className="query">{transcript}</p>
+              <p className="response">{response}</p>
+
+            </div>
+            <button className="microphone-reset btn" onClick={() => handleReset}>
+              Reset
+            </button>
+          </div>
+        )}
+      </div>
     </>
   );
 }
