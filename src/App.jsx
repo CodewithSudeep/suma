@@ -43,9 +43,21 @@ function App() {
     transcript && proceesor(transcript);
   }, [transcript]);
 
+  const speak = async(text) => {
+    await speech.speak({
+      text: text,
+      queue: false,
+      listeners: {
+        onstart: () => {
+          console.log("started");
+        },
+      },
+    });
+  }
+
   React.useEffect(() => {
     response &&
-      speak(response, speech)
+      speak(response)
         .then(() => {
           resetTranscript();
         })
