@@ -4,7 +4,7 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import "./App.css";
 import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
-import { handler, proceesor, sendResponse } from "./process";
+import { handler, proceesor, sendResponse } from "./utils/process";
 import Speech from "speak-tts";
 import Wave from "./components/Wave";
 import { speak } from "./utils/Speak";
@@ -114,11 +114,12 @@ function App() {
     }
   };
 
-  if (!isMicrophoneAvailable) {
-    <div className="mircophone-container">
-      User denied the support for Speech Recognition.
-    </div>;
-  }
+  if (!isMicrophoneAvailable)
+    return (
+      <div className="mircophone-container">
+        User denied the support for Speech Recognition.
+      </div>
+    );
 
   if (!browserSupportsSpeechRecognition)
     return (
