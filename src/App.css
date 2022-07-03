@@ -66,13 +66,13 @@ body {
   align-items: center;
   display: flex;
   flex-direction: column;
-  height: 50vh;
   justify-content: space-between;
   padding-bottom: 30px;
   text-align: center;
   width: 100vw;
   overflow: hidden;
   margin: auto;
+  margin-top: 20px;
 
 }
 .microphone-result-text {
