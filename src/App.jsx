@@ -14,7 +14,7 @@ function App() {
   const microphoneRef = React.useRef(null);
   const [response, setResponse] = React.useState("");
   const [all_voices, set_voices] = React.useState([]);
-  const [activeVoice, setActiveVoice] = React.useState("");
+  const [activeVoice, setActiveVoice] = React.useState("Google US English");
   const {
     transcript,
     resetTranscript,
