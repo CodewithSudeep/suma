@@ -4,10 +4,10 @@ import SpeechRecognition, {
 } from "react-speech-recognition";
 import "./App.css";
 import SettingsVoiceIcon from "@mui/icons-material/SettingsVoice";
-import { handler, proceesor, sendResponse } from "./utils/process";
+import { handler, proceesor } from "./utils/process";
 import Speech from "speak-tts";
 import Wave from "./components/Wave";
-import { speak } from "./utils/Speak";
+// import { speak } from "./utils/Speak";
 
 function App() {
   const [isListening, setIsListening] = React.useState(false);
@@ -44,6 +44,7 @@ function App() {
   }, [transcript]);
 
   const speak = async(text) => {
+    await speech.setVoice(activeVoice);
     await speech.speak({
       text: text,
       queue: false,
@@ -60,6 +61,7 @@ function App() {
       speak(response)
         .then(() => {
           resetTranscript();
+          setResponse("");
         })
         .catch((error) => console.error(error));
   }, [response]);
@@ -72,7 +74,6 @@ function App() {
           lang: "en-US",
           rate: 1,
           pitch: 1,
-          voice: activeVoice,
           splitSentences: true,
           listeners: {
             onvoiceschanged: (voices) => {
@@ -89,10 +90,15 @@ function App() {
         console.error(error);
       }
     })();
-  }, [activeVoice]);
+  }, []);
+
+  // effect to set active voice
+
 
   const handleListing = () => {
     setIsListening(true);
+    // stop speaking
+    speech.cancel();
     setResponse("");
     microphoneRef.current.classList.add("listening");
     SpeechRecognition.startListening({
@@ -104,12 +110,16 @@ function App() {
     setIsListening(false);
     microphoneRef.current.classList.remove("listening");
     SpeechRecognition.stopListening();
-    handler();
-    const res = sendResponse();
-    if (res) {
-      // alert(res)
-      setResponse(res);
-    }
+    handler().then((res) => {
+      console.log(res);
+      if (res) {
+        // alert(res)
+        setResponse(res);
+      }
+    }).catch((err) => {
+      console.log("Error in response",err);
+    });
+   
   };
 
   const handleReset = () => {
@@ -147,7 +157,11 @@ function App() {
           <p>A Personal Voice Assistant</p>
           {all_voices && (
             <>
-              <select onChange={(e) => setActiveVoice(e.target.value)}>
+              <select
+                onChange={(e) => {
+                  setActiveVoice(e.target.value);
+                }}
+              >
                 {all_voices.map((v, k) => (
                   <option key={k} value={v}>
                     {v}
