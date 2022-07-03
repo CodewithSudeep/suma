@@ -1,4 +1,4 @@
-export const speak = async response => {
+export const speak = async (response, speech) => {
   try {
     await speech.speak({
       text: response,
