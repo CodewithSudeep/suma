@@ -45,7 +45,7 @@ function App() {
 
   React.useEffect(() => {
     response &&
-      speak(response, speech)
+      speak()
         .then(() => {
           resetTranscript();
         })
