@@ -95,6 +95,15 @@ const sensor = async () => {
         if(statement.includes("migraine")){
             ans +="Blood pressure-lowering medications, Antidepressants, Antihistamines, Pain reliever medications, Anti-seizure drugs,  CGRP monoclonal antibodies";
         }
+        if(statement.includes("common cold")|| statement.includes("cold")){
+          ans +=`Stay hydrated. Water, juice, clear broth or warm lemon water with honey helps loosen congestion and prevents dehydration,
+          Rest,
+          Combat stuffiness,
+          Relieve pain,
+          Sip warm liquids,
+          Try honey,
+          Add moisture to the air.`;
+      }
     }
   }
   else if (statement.includes("how are you")) {
