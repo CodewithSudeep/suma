@@ -13,7 +13,7 @@
     "react-speech-recognition": "^3.10.0",
     "regenerator-runtime": "^0.13.9",
     "speak-tts": "^2.0.8",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^3.1.0"
   },
   "scripts": {
     "dev": "vite",
