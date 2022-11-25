@@ -11,7 +11,7 @@
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
     "react-speech-recognition": "^3.10.0",
-    "regenerator-runtime": "^0.13.9",
+    "regenerator-runtime": "^0.13.11",
     "speak-tts": "^2.0.8",
     "web-vitals": "^2.1.4"
   },
